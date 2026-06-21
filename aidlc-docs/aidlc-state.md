@@ -6,7 +6,7 @@
 - **Scope**: feature
 - **Start Date**: 2026-06-21T11:48:03Z
 - **State Version**: 7
-- **Active Agent**: aidlc-architect-agent
+- **Active Agent**: aidlc-aws-platform-agent
 - **Worktree Path**:
 - **Bolt Refs**:
 - **Practices Affirmed Timestamp**: 2026-06-21T13:12:48Z
@@ -25,8 +25,8 @@
 
 ## Execution Plan Summary
 - **Total Stages**: 31
-- **Completed**: 18
-- **In Progress**: nfr-requirements
+- **Completed**: 20
+- **In Progress**: infrastructure-design
 
 ## Runtime State
 - **Revision Count**: 0
@@ -72,9 +72,9 @@
 ### CONSTRUCTION PHASE
 Per unit: [TBD]
 - [x] functional-design — EXECUTE
-- [-] nfr-requirements — EXECUTE
-- [ ] nfr-design — EXECUTE
-- [ ] infrastructure-design — EXECUTE
+- [x] nfr-requirements — EXECUTE
+- [x] nfr-design — EXECUTE
+- [-] infrastructure-design — EXECUTE
 - [ ] code-generation — EXECUTE
 - [ ] build-and-test — EXECUTE
 - [ ] ci-pipeline — EXECUTE
@@ -90,12 +90,12 @@ Per unit: [TBD]
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: nfr-requirements
-- **Next Stage**: nfr-design
+- **Current Stage**: infrastructure-design
+- **Next Stage**: code-generation
 - **Status**: Running
-- **Last Updated**: 2026-06-21T15:13:19Z
+- **Last Updated**: 2026-06-21T15:39:34Z
 
 ## Session Resume Point
-- **Last Completed Stage**: functional-design
-- **Next Action**: Execute NFR Requirements
+- **Last Completed Stage**: nfr-design
+- **Next Action**: Execute Infrastructure Design
 - **Pending Artifacts**: none
