@@ -1,8 +1,6 @@
-# Team-Level Rules
+# Team Practices — AIネイティブ Webアプリ雛形
 
-> This team's affirmed practices and corrections. Overrides aidlc-org.md.
-> Populated by practices-discovery affirmation gate. Edit at the gate,
-> not directly.
+> Greenfield。org既定を確認(affirm)し、プロジェクト固有として品質ゲートのfail-closed必須化を追加。
 
 ## Way of Working
 
@@ -23,14 +21,3 @@
 ## Code Style
 
 言語デフォルトに従う。TypeScriptはPrettier（フォーマッタ）＋ESLint（リンタ）をリポジトリ設定で強制し、CIでマージ前に実行する。命名は言語慣用（TSはcamelCase）。
-## Forbidden
-
-<!-- Team-specific forbidden patterns -->
-
-## Mandated
-
-<!-- Team-specific mandates -->
-
-## Corrections
-
-<!-- Self-learning loop appends here. -->

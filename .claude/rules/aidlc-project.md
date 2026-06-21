@@ -57,12 +57,16 @@
 <!-- Format: NEVER [behavior] (affirmed [date]) -->
 <!-- Example: NEVER throw exceptions across service layer boundaries (affirmed 2026-05-17) -->
 
+NEVER merge or deploy AI-generated code that has not passed all four fail-closed quality gates. (affirmed 2026-06-21)
+NEVER hardcode credentials or secrets in generated code or templates — use environment variables or a secrets manager. (affirmed 2026-06-21)
 ## Mandated
 
 <!-- Populated by practices-discovery affirmation gate. -->
 <!-- Format: ALWAYS [behavior] (affirmed [date]) -->
 <!-- Example: ALWAYS use Result<T,E> for fallible operations in service layer (affirmed 2026-05-17) -->
 
+ALWAYS enforce the four quality pillars (automated tests, static-analysis/type-check, security scanning, deployability) as fail-closed CI gates — block merge/progress if any pillar fails. (affirmed 2026-06-21)
+ALWAYS run security scans (dependency vulnerabilities, secret detection, SAST) as part of the mandatory quality gate for AI-generated code. (affirmed 2026-06-21)
 ## Corrections
 
 <!-- Project-specific corrections from human feedback. -->
