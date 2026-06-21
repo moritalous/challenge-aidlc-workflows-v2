@@ -6,7 +6,7 @@
 - **Scope**: feature
 - **Start Date**: 2026-06-21T11:48:03Z
 - **State Version**: 7
-- **Active Agent**: aidlc-design-agent
+- **Active Agent**: aidlc-architect-agent
 - **Worktree Path**:
 - **Bolt Refs**:
 - **Practices Affirmed Timestamp**: 2026-06-21T13:12:48Z
@@ -25,8 +25,8 @@
 
 ## Execution Plan Summary
 - **Total Stages**: 31
-- **Completed**: 13
-- **In Progress**: refined-mockups
+- **Completed**: 14
+- **In Progress**: application-design
 
 ## Runtime State
 - **Revision Count**: 0
@@ -63,8 +63,8 @@
 - [x] practices-discovery — EXECUTE
 - [x] requirements-analysis — EXECUTE
 - [x] user-stories — EXECUTE
-- [-] refined-mockups — EXECUTE
-- [ ] application-design — EXECUTE
+- [x] refined-mockups — EXECUTE
+- [-] application-design — EXECUTE
 - [ ] units-generation — EXECUTE
 - [ ] delivery-planning — EXECUTE
 
@@ -89,12 +89,12 @@ Per unit: [TBD]
 
 ## Current Status
 - **Lifecycle Phase**: INCEPTION
-- **Current Stage**: refined-mockups
-- **Next Stage**: application-design
+- **Current Stage**: application-design
+- **Next Stage**: units-generation
 - **Status**: Running
-- **Last Updated**: 2026-06-21T13:35:41Z
+- **Last Updated**: 2026-06-21T13:42:59Z
 
 ## Session Resume Point
-- **Last Completed Stage**: user-stories
-- **Next Action**: Execute Refined Mockups
+- **Last Completed Stage**: refined-mockups
+- **Next Action**: Execute Application Design
 - **Pending Artifacts**: none
