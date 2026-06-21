@@ -13,7 +13,7 @@
 |-----------|----|----|
 | entities | `{ name, fields: {name,type}[] }[]` | 生成対象のドメインエンティティ |
 | screens | `("list"\|"detail"\|"create"\|"confirm"\|"empty")[]` | 生成する画面種別 |
-| operations | `("create"\|"update"\|"delete")[]` | skeletonの主要操作。`changeStatus`は専用遷移規則を持たずスコープ外（下記F2注） |
+| operations | `("create"\|"update"\|"delete"\|"changeStatus")[]` | U0契約（component-methods.md:15）と一致。skeletonでは `changeStatus` は **`update`(PUT)による単純更新として実現**し、専用の状態遷移規則・専用UIは持たない（下記F2注） |
 
 ### GateResult（品質ゲートの判定結果, U0契約）
 | フィールド | 型 | 説明 |
@@ -44,7 +44,7 @@
 > DynamoDBテーブル: PK=`id`。skeletonは単一テーブル・単一リソース。
 > Authはシードユーザー前提（AC-5スタブ, FR-7.1でスコープ外を明示）。
 >
-> **F2注（status/changeStatus）:** skeletonでは `status` は自由更新属性とし、`update`(PUT) で任意に変更する。状態遷移を制約する `changeStatus` 専用操作・遷移規則・専用UIは **skeletonスコープ外**（後続Boltで遷移規則とUIを定義）。これにより `IntentModel.operations` から `changeStatus` を除外し、契約と実装の矛盾を解消。
+> **F2注（status/changeStatus）:** `IntentModel.operations` は U0契約（component-methods.md:15）どおり `changeStatus` を**含む**（契約値は除外しない）。skeletonでは `changeStatus` を `update`(PUT) による `status` の単純更新として実現し、`status` は自由更新属性として扱う。状態遷移を**制約する規則**（許可遷移グラフ・専用UI・遷移バリデーション）のみが **skeletonスコープ外**（後続Boltで定義）。スコープ外なのは「遷移規則」であって「契約の列挙値」ではない — これにより契約と実装の矛盾を解消。
 
 ## エンティティ関係
 - skeletonでは Task のみ（関連エンティティなし）。

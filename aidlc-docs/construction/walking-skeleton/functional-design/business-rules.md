@@ -10,18 +10,24 @@
 - `PENDING` / `ERROR` は **非PASS** として扱い、合格と見なさない（典拠=US-D2 AC2/AC3: 保留・エラーを合格と見せない）。
 - 部分合格（4柱中一部のみPASS）も **不合格** 扱い（典拠=US-B2 AC3）。
 
-### BR-T2: 自動修正の試行カウント（ADR-006 / FR-2.3）
+> **F6 スコープ注（U6 = 後続Bolt）:** BR-T2 / BR-T3 / BR-T7 と「自動修正ループ・3分岐エスカレーション」は U6（TC-7 AutoFixLoop + TC-8 EscalationHandler）に属し、**walking skeleton には含まない**（典拠=unit-of-work.md L74/L78）。skeletonは下記 **BR-T1' の単純な1試行・人手前提パス** で動く。以下 BR-T2/T3/T7 は後続Boltの設計を先取り記載したもので、skeletonでは未実装。
+
+### BR-T1': skeletonのゲート不合格時パス（U6不在時の既定挙動）
+- skeletonは自動修正を行わない。ゲートが非PASS（FAIL/PENDING/ERROR/部分合格）なら**1回で停止**し、不合格の柱と理由（`GateResult.details`）を人手に提示して終了する。
+- 修正は人手で実施し、ユーザーが再度ゲートを起動する（ツール側の自動リトライ・カウンタ・自動エスカレーションは無し）。
+
+### BR-T2: 自動修正の試行カウント（ADR-006 / FR-2.3）【U6 / skeletonスコープ外】
 - 「1試行」= 修正適用 + 全4柱再評価の1サイクル。カウント単位はゲート全体。
 - 最大3試行。いずれかの試行で全柱PASSなら成功し終了。部分合格は不合格として次試行へ。
 
-### BR-T3: エスカレーションとカウントリセット（ADR-006 / FR-2.4）
+### BR-T3: エスカレーションとカウントリセット（ADR-006 / FR-2.4）【U6 / skeletonスコープ外】
 - 3試行で全柱PASSに至らなければエスカレーション（3択）。
 - 「意図修正再実行」「手動修正再投入」いずれも人手介入後はカウンタをリセット（再び最大3試行）。
 
-### BR-T7: エスカレーション3択の遷移（F5 / EscalationChoice / US-B3）
+### BR-T7: エスカレーション3択の遷移（F5 / EscalationChoice / US-B3）【U6 / skeletonスコープ外】
 - `rerun-intent`: カウンタをリセットし意図解析(Parsing)から再実行。
 - `manual-resubmit`: カウンタをリセットし手動修正を品質ゲート(Gating)で再評価。
-- `abort`: `ProjectStore.save` で生成物・進捗を保存して停止。後で再開可能（US-B3 AC2）。U1(ProjectStore)依存はskeleton包含のため実装可能。
+- `abort`: `ProjectStore.save` で生成物・進捗を保存して停止。後で再開可能（US-B3 AC2）。U1(ProjectStore)依存はskeleton包含のため、U6実装時に追加コストなく利用可能。
 
 ### BR-T4: 意図の欠落検出（FR-1.1 / US-A2 AC3）
 - `IntentModel` 生成時に entities が空、または必須属性欠落なら、生成前に要約確認へ差し戻す。
