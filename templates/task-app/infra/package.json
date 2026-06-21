@@ -1,0 +1,25 @@
+{
+  "name": "@vibe-app/infra",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Generated-app TEMPLATE: AWS CDK AppStack (S3+CloudFront OAC, HTTP API, Lambda, DynamoDB, least-priv IAM).",
+  "bin": {
+    "vibe-infra": "./dist/bin/app.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "diff": "cdk diff"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.147.0",
+    "constructs": "^10.3.0"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.147.0"
+  }
+}

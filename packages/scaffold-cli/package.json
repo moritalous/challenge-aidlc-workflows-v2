@@ -1,0 +1,20 @@
+{
+  "name": "@vibe/scaffold-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The scaffold TOOL: intent -> AI-generate -> 4-pillar fail-closed quality gate -> AWS deploy. Units U1,U2,U3,U4,U5,U7.",
+  "bin": {
+    "vibe": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "node ./dist/cli.js"
+  },
+  "dependencies": {
+    "@vibe/contracts": "0.1.0"
+  }
+}

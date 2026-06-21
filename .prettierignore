@@ -1,0 +1,8 @@
+dist/
+build/
+coverage/
+cdk.out/
+node_modules/
+aidlc-docs/
+.claude/
+*.md

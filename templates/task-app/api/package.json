@@ -1,0 +1,20 @@
+{
+  "name": "@vibe-app/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Generated-app TEMPLATE: Hono Task-CRUD API on AWS Lambda + DynamoDB.",
+  "main": "./dist/lambda.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.600.0",
+    "@hono/zod-validator": "^0.4.1",
+    "hono": "^4.6.0",
+    "zod": "^3.23.8"
+  }
+}
