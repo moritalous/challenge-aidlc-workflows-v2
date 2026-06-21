@@ -21,13 +21,27 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
       reportsDirectory: './coverage',
-      include: ['packages/**/src/**', 'templates/**/src/**'],
+      // Cover only what the node-env root run actually exercises: the
+      // scaffold-cli logic + the api + the infra. The web tree is covered by
+      // its own jsdom config (npm -w @vibe-app/web test) and would otherwise
+      // show false 0% rows here.
+      include: [
+        'packages/scaffold-cli/src/**',
+        'templates/task-app/api/src/**',
+        'templates/task-app/infra/src/**',
+      ],
       exclude: [
         '**/*.test.ts',
         '**/*.test.tsx',
         '**/dist/**',
         '**/*.d.ts',
         '**/index.ts',
+        // Entry-point wiring / framework adapters: exercised by the CLI smoke
+        // run and the Lambda/CDK runtimes, not unit-tested in the skeleton.
+        '**/cli.ts',
+        '**/runners.ts',
+        '**/lambda.ts',
+        '**/bin/**',
       ],
       thresholds: {
         lines: 80,

@@ -14,3 +14,5 @@
 - 2026-06-21 [Deviation] walking skeleton は U6（自動修正AutoFix/エスカレーション）を含まない。ゲート非PASS時は HaltForHuman（1回停止・不合格理由提示・人手修正前提, BR-T1'）で動く。BR-T2/T3/T7・自動修正ループ・3分岐エスカレーションは後続Bolt(U6)スコープ（典拠=unit-of-work.md L74/L78）。 <!-- cid:functional-design:c2 -->
 - 2026-06-21 [Interpretation] application-design で確定済みのスタック決定（ADR-002等）を下流のnfr-requirementsで再決定しない。下流stageは上流確定事項をNFR観点で追認・正当化し、根拠を固定するに留める（二重管理・不一致の防止）。性能の暫定値は performance-validation へ委譲する。 <!-- cid:nfr-requirements:c1 -->
 - 2026-06-21 [Tradeoff] モックした外部I/O（DynamoDB等）のユニットテストは緑でも、生成コードのデータアクセス手段（Scan/Query等）とIaCのIAM権限の不整合を検出できない。データアクセス手段は必ず付与IAMアクションと一致させ、不整合は権限を緩めず設計整合な手段（例: list用GSI+Query）で解消する。アーキレビューでこの種の『テストが捕まえない』欠陥を必ず点検する。 <!-- cid:code-generation:c1 -->
+- 2026-06-21 [Interpretation] セキュリティ柱のdev依存脆弱性は本番非該当として扱う。カバレッジ/監査はランタイム成果物を基準に判定し、ビルド専用ツールチェーン(esbuild等)の脆弱性は `npm audit --omit=dev` を必須ゲートにして分離、全体auditはinformationalとして監視する。 <!-- cid:build-and-test:c1 -->
+- 2026-06-21 [Tradeoff] マルチconfig monorepoの集約カバレッジは誤解を招く。カバレッジは実行コードに範囲を絞り(型定義barrel・エントリ配線・別環境でテストする層を除外)、別runの層(web等)は個別に閾値判定する。素の集約値で品質を判断しない。 <!-- cid:build-and-test:c2 -->
