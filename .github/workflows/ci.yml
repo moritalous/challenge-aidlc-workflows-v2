@@ -1,0 +1,142 @@
+name: CI
+
+# 4-pillar fail-closed quality gate (project Mandated). Every pillar is a
+# required job; any failure blocks merge. PENDING/ERROR (a job that never
+# reports success) is treated as non-PASS by branch protection.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --- Pillar 1: tests (≥80% coverage, both layers) ---
+  test:
+    name: Pillar - Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Unit + integration (node env, coverage ≥80%)
+        run: npm run test:coverage
+      - name: Web tests (jsdom env, coverage ≥80%)
+        run: npm -w @vibe-app/web run test -- --coverage
+
+  # --- Pillar 2: static analysis / types ---
+  static:
+    name: Pillar - Static & Types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Type check (tsc, all workspaces)
+        run: npm run typecheck
+      - name: Lint (ESLint)
+        run: npm run lint
+      - name: Format check (Prettier)
+        run: npm run format:check
+
+  # --- Pillar 3: security (deps + secrets + SAST) ---
+  security:
+    name: Pillar - Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Dependency audit (production deps, High/Critical = 0)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Secret detection (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Filesystem vulnerability scan (Trivy, High/Critical)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+          ignore-unfixed: true
+      - name: SAST (Semgrep)
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/typescript
+
+  # --- Pillar 4: deployability (CDK synth / template validation) ---
+  deploy-validate:
+    name: Pillar - Deployability
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build (all workspaces)
+        run: npm run build
+      - name: CDK synth (template validation, no deploy)
+        working-directory: templates/task-app/infra
+        run: npx cdk synth --quiet
+
+  # --- fail-closed gate: AND of all 4 pillars ---
+  quality-gate:
+    name: Quality Gate (fail-closed AND)
+    needs: [test, static, security, deploy-validate]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All four pillars passed
+        run: echo "✅ test + static + security + deploy all PASS — gate open"
+
+  # --- deploy-on-merge to staging (only after the gate, only on main) ---
+  deploy-staging:
+    name: Deploy (staging)
+    needs: [quality-gate]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write # OIDC — no long-lived AWS keys
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: CDK deploy (idempotent diff)
+        working-directory: templates/task-app/infra
+        run: npx cdk deploy AppStack --require-approval never -c envName=staging
+      - name: Smoke test (/health == 200 within 5s)
+        run: |
+          URL="${{ vars.STAGING_HEALTH_URL }}"
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 5 "$URL/health")
+          test "$code" = "200" || { echo "smoke failed: HTTP $code"; exit 1; }
