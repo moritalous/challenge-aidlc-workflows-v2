@@ -25,8 +25,8 @@
 
 ## Execution Plan Summary
 - **Total Stages**: 31
-- **Completed**: 14
-- **In Progress**: application-design
+- **Completed**: 15
+- **In Progress**: units-generation
 
 ## Runtime State
 - **Revision Count**: 0
@@ -64,8 +64,8 @@
 - [x] requirements-analysis — EXECUTE
 - [x] user-stories — EXECUTE
 - [x] refined-mockups — EXECUTE
-- [-] application-design — EXECUTE
-- [ ] units-generation — EXECUTE
+- [x] application-design — EXECUTE
+- [-] units-generation — EXECUTE
 - [ ] delivery-planning — EXECUTE
 
 ### CONSTRUCTION PHASE
@@ -89,12 +89,12 @@ Per unit: [TBD]
 
 ## Current Status
 - **Lifecycle Phase**: INCEPTION
-- **Current Stage**: application-design
-- **Next Stage**: units-generation
+- **Current Stage**: units-generation
+- **Next Stage**: delivery-planning
 - **Status**: Running
-- **Last Updated**: 2026-06-21T13:42:59Z
+- **Last Updated**: 2026-06-21T13:49:46Z
 
 ## Session Resume Point
-- **Last Completed Stage**: refined-mockups
-- **Next Action**: Execute Application Design
+- **Last Completed Stage**: application-design
+- **Next Action**: Execute Units Generation
 - **Pending Artifacts**: none
